@@ -63,7 +63,7 @@ if (isset($_GET["filled"])) {
                                             <div class="col-lg-9">
                                                 <div class="description"><?php echo $result["description"] ?></div>
                                             </div>
-                                            <div class="col-lg-auto"><span><i class="fa fa-eye"></i></span></div>
+                                            <div class="col-lg-auto"><span onclick="view_data(<?php echo $result['id'] ?>)" data-bs-toggle="modal" data-bs-target="#exampleModal3" ><i class="fa fa-eye"></i></span></div>
                                             <div class="col-lg-auto"><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal2" onclick="do_update(<?php echo $result['id'] ?>)">Edit</button></div>
                                             <div class="col-lg-auto"><button class="btn btn-danger" onclick="do_delete(<?php echo $result['id'] ?>)">Delete</button></div>
                                         </div>
@@ -133,7 +133,27 @@ if (isset($_GET["filled"])) {
                 </div>
             </div>
         </div>
-        <!--update-task -->
+        <!--view-task -->
+        <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="viewTaskModal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" style="max-width: 800px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">View Form</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                            <input type="hidden" name="id" id="updateId">
+                            <div><label for="title2">Title</label></div>
+                            <input type="text" name="title" class="form-control" id="title2" readonly>
+                            <div><label for="description2">Description</label></div>
+                            <textarea class="form-control" name="description" id="description2" readonly></textarea>
+                            <div><span class=>created: </span> <span class="ms-2" id="created"></span></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
     </div>
     <script>
         $(document).ready(function() {
@@ -185,6 +205,20 @@ if (isset($_GET["filled"])) {
                     $('#title1').val(result[0].title);
                     $('#description1').val(result[0].description);
                     $('#updateId').val(result[0].id);
+
+                });
+        };
+        function view_data(data) {
+            $.post("get_update_data.php", {
+                    id: data
+                })
+                .done(function(data) {
+                    var result = JSON.parse(data);
+                    console.log(result);
+                    console.log(result[0].id);
+                    $('#title2').val(result[0].title);
+                    $('#description2').val(result[0].description);
+                    $('#created').text(result[0].created);
 
                 });
         };
