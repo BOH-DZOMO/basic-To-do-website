@@ -1,0 +1,30 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+.main{
+    padding: 0;
+}
+.navbar{
+    background-color: rgb(166, 166, 236);
+}
+body{
+    background-color: rgb(251,201,164);
+}
+.body{
+    background-color: whitesmoke;
+}
+.title{
+    width: 100%;
+    width: 500px;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.description{
+    color: gray;
+    width: 700px;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
