@@ -24,10 +24,10 @@ if (isset($_GET["filled"])) {
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Task</button>
             </div>
             <div class="col-lg-auto">
-                <a href="">all</a>
+                <a href="delete_page.php">deleted</a>
             </div>
             <div class="col-lg-auto">
-                <a href="">complete</a>
+                <a href="complete_page.php">complete</a>
             </div>
             <div class="col-lg-auto">
                 <span>incomplete</span>
@@ -63,7 +63,8 @@ if (isset($_GET["filled"])) {
                                             <div class="col-lg-9">
                                                 <div class="description"><?php echo $result["description"] ?></div>
                                             </div>
-                                            <div class="col-lg-auto"><span onclick="view_data(<?php echo $result['id'] ?>)" data-bs-toggle="modal" data-bs-target="#exampleModal3" ><i class="fa fa-eye"></i></span></div>
+                                            <div class="col-lg-auto"><span onclick="view_data(<?php echo $result['id'] ?>)" data-bs-toggle="modal" data-bs-target="#exampleModal3"><i class="fa fa-eye"></i></span></div>
+                                            <div class="col-lg-auto"><span class="complete" onclick="send_data(<?php echo $result['id'] ?>)"><i class="fa fa-check"></i></span></div>
                                             <div class="col-lg-auto"><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal2" onclick="do_update(<?php echo $result['id'] ?>)">Edit</button></div>
                                             <div class="col-lg-auto"><button class="btn btn-danger" onclick="do_delete(<?php echo $result['id'] ?>)">Delete</button></div>
                                         </div>
@@ -142,12 +143,12 @@ if (isset($_GET["filled"])) {
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                            <input type="hidden" name="id" id="updateId">
-                            <div><label for="title2">Title</label></div>
-                            <input type="text" name="title" class="form-control" id="title2" readonly>
-                            <div><label for="description2">Description</label></div>
-                            <textarea class="form-control" name="description" id="description2" readonly></textarea>
-                            <div><span class=>created: </span> <span class="ms-2" id="created"></span></div>
+                        <input type="hidden" name="id" id="updateId">
+                        <div><label for="title2">Title</label></div>
+                        <input type="text" name="title" class="form-control" id="title2" readonly>
+                        <div><label for="description2">Description</label></div>
+                        <textarea class="form-control" name="description" id="description2" readonly rows="4"></textarea>
+                        <div><span class=>created: </span> <span class="ms-2" id="created"></span></div>
                     </div>
 
                 </div>
@@ -208,6 +209,7 @@ if (isset($_GET["filled"])) {
 
                 });
         };
+
         function view_data(data) {
             $.post("get_update_data.php", {
                     id: data
@@ -220,6 +222,15 @@ if (isset($_GET["filled"])) {
                     $('#description2').val(result[0].description);
                     $('#created').text(result[0].created);
 
+                });
+        };
+
+        function send_data(data) {
+            $.post("set_complete.php", {
+                    id: data
+                })
+                .done(function() {
+                    window.location.href = "index.php";
                 });
         };
     </script>
