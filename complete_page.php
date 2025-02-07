@@ -104,8 +104,6 @@ $read_result = read_task();
                 })
                 .done(function(data) {
                     var result = JSON.parse(data);
-                    console.log(result);
-                    console.log(result[0].id);
                     $('#title2').val(result[0].title);
                     $('#description2').val(result[0].description);
                     $('#created').text(result[0].created);

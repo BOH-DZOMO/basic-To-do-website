@@ -100,7 +100,7 @@ if (isset($_GET["filled"])) {
                             <div><label for="description">Description</label></div>
                             <textarea class="form-control" name="description" id="description"></textarea>
                             <div class="d-flex justify-content-center pt-2">
-                                <input type="submit" id="edit" name="submit" value="submit" class="btn btn-success">
+                                <input type="submit" id="submit" name="submit" value="submit" class="btn btn-success">
                                 <input type="reset" value="Reset" class="btn btn-danger ms-2">
                             </div>
                         </form>
@@ -157,22 +157,24 @@ if (isset($_GET["filled"])) {
 
     </div>
     <script>
-        $(document).ready(function() {
+       
             let $input1 = $('#title');
             let $input2 = $('#description');
-
-            function checkFields() {
-                $('#sub').prop('disabled', $input1.val() === "" || $input2.val() === "");
+            function checkFields1() {
+                $('#submit').prop('disabled', $input1.val() === "" || $input2.val() === "");
             }
-            checkFields();
-            $input1.on('input', checkFields);
-            $input2.on('input', checkFields);
-
-            //
-
-
-
-        });
+            checkFields1();
+            $input1.on('input', checkFields1);
+            $input2.on('input', checkFields1);
+         //
+            let $update_input1 = $('#title1');
+            let $update_input2 = $('#description1');
+            function checkFields2() {
+                $('#edit').prop('disabled', $update_input1.val() === "" || $update_input2.val() === "");
+            }
+            checkFields2();
+            $update_input1.on('input', checkFields2);
+            $update_input2.on('input', checkFields2);
 
         function do_delete(id) {
             if (confirm("Are you sure to DELETE????")) {
@@ -201,8 +203,6 @@ if (isset($_GET["filled"])) {
                 })
                 .done(function(data) {
                     var result = JSON.parse(data);
-                    console.log(result);
-                    console.log(result[0].id);
                     $('#title1').val(result[0].title);
                     $('#description1').val(result[0].description);
                     $('#updateId').val(result[0].id);
@@ -216,8 +216,6 @@ if (isset($_GET["filled"])) {
                 })
                 .done(function(data) {
                     var result = JSON.parse(data);
-                    console.log(result);
-                    console.log(result[0].id);
                     $('#title2').val(result[0].title);
                     $('#description2').val(result[0].description);
                     $('#created').text(result[0].created);
