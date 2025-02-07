@@ -3,8 +3,8 @@
 <?php
 require_once "header.php";
 require_once "database.php";
-require_once "read_task.php";
-$read_result = read_task();
+require_once "function.php";
+$read_result = incomplete_read_task();
 if (isset($_GET["filled"])) {
     echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
   Some input fields were empty (Operation unsuccessfull)
@@ -94,7 +94,7 @@ if (isset($_GET["filled"])) {
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="create_task.php" method="post">
+                        <form action="function.php?value=index_add" method="post">
                             <div><label for="title">Title</label></div>
                             <input type="text" name="title" class="form-control" id="title">
                             <div><label for="description">Description</label></div>
@@ -118,7 +118,7 @@ if (isset($_GET["filled"])) {
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="update.php" method="post">
+                        <form action="function.php?value=index_update" method="post">
                             <input type="hidden" name="id" id="updateId">
                             <div><label for="title">Title</label></div>
                             <input type="text" name="title" class="form-control" id="title1">
@@ -177,13 +177,13 @@ if (isset($_GET["filled"])) {
         function do_delete(id) {
             if (confirm("Are you sure to DELETE????")) {
                 $.post("delete.php", {
-                        id: id
+                        id: id,
+                        action: "delete_incomplete"
                     })
                     .done(function(data) {
                         var a = JSON.parse(data);
-                        console.log(a);
                         if (a == "success") {
-                            window.location.href = "index.php?msg=success";
+                            window.location.href = "index.php";
                         } else {
                             document.getElementById("alert").innerHTML = `<div class="alert alert-danger alert-dismissible fade show" role="alert">
   Operation Unsuccessful(Could not delete)
@@ -197,12 +197,11 @@ if (isset($_GET["filled"])) {
 
         function do_update(data) {
             $.post("get_update_data.php", {
-                    id: data
+                    id: data,
+                    action: "get_update_data"
                 })
                 .done(function(data) {
                     var result = JSON.parse(data);
-                    console.log(result);
-                    console.log(result[0].id);
                     $('#title1').val(result[0].title);
                     $('#description1').val(result[0].description);
                     $('#updateId').val(result[0].id);
@@ -211,13 +210,12 @@ if (isset($_GET["filled"])) {
         };
 
         function view_data(data) {
-            $.post("get_update_data.php", {
-                    id: data
+            $.post("function.php", {
+                    id: data,
+                    action: "get_update_data"
                 })
                 .done(function(data) {
                     var result = JSON.parse(data);
-                    console.log(result);
-                    console.log(result[0].id);
                     $('#title2').val(result[0].title);
                     $('#description2').val(result[0].description);
                     $('#created').text(result[0].created);
@@ -226,8 +224,9 @@ if (isset($_GET["filled"])) {
         };
 
         function send_data(data) {
-            $.post("set_complete.php", {
-                    id: data
+            $.post("function.php", {
+                    id: data,
+                    action: "set_complete"
                 })
                 .done(function() {
                     window.location.href = "index.php";

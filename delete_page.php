@@ -3,8 +3,8 @@
 <?php
 require_once "header.php";
 require_once "database.php";
-require_once "delete_page_data.php";
-$read_result = read_task();
+require_once "function.php";
+$read_result = delete_read_task();
 
 ?>
 
@@ -97,13 +97,12 @@ $read_result = read_task();
     </div>
     <script>
         function view_data(data) {
-            $.post("get_update_data.php", {
-                    id: data
+            $.post("function.php", {
+                    id: data,
+                    action: "get_update_data"
                 })
                 .done(function(data) {
                     var result = JSON.parse(data);
-                    console.log(result);
-                    console.log(result[0].id);
                     $('#title2').val(result[0].title);
                     $('#description2').val(result[0].description);
                     $('#created').text(result[0].created);
